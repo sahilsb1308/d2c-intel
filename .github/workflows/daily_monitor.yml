@@ -32,6 +32,6 @@ jobs:
           BRAND_KEYWORDS: "Swiss Beauty,SwissBeauty,swiss beauty india"
           RSS_FEEDS: "LinkedIn|https://rss.app/feeds/ylvqTkeFXjn7jRBo.xml|no"
           RSS_FEEDS_2: "Reddit|https://rss.app/feeds/QuuIDvKATAncaqA7.xml|yes"
-          RSS_FEEDS_3: "Google News|https://news.google.com/rss/search?q=%22swiss+beauty%22&hl=en-IN&gl=IN&ceid=IN:en|yes"
+          RSS_FEEDS_3: "Google News|https://rss.app/feeds/g6mhwU1ZXisX9XYP.xml|yes"
           RSS_FEEDS_4: "Twitter|https://rss.app/feeds/PVAJ8H37eWoMQySq.xml|yes"
         run: python main.py
