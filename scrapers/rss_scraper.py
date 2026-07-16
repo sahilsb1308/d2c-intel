@@ -64,8 +64,7 @@ def fetch_feed(url: str, label: str, filter_keywords: bool = True) -> list[dict]
             continue
 
         pub_date = _parse_date(entry)
-        # Only keep posts from today (skip if date known and not today)
-        if pub_date and pub_date.date() != today:
+        if not pub_date or pub_date.date() != today:
             continue
 
         author = (
