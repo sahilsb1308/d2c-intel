@@ -29,7 +29,7 @@ async def _search_twitter(keywords: list[str], cutoff: datetime) -> list[dict]:
                     continue
                 seen_ids.add(tweet.id)
                 mentions.append({
-                    "platform": "Twitter/X",
+                    "platform": "X",
                     "url": f"https://twitter.com/{tweet.user.username}/status/{tweet.id}",
                     "author": f"@{tweet.user.username}",
                     "post_date": tweet.date.strftime("%Y-%m-%d %H:%M UTC"),
