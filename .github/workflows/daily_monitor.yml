@@ -1,0 +1,37 @@
+name: Swiss Beauty Daily Monitor
+
+on:
+  schedule:
+    - cron: "30 3 * * *"   # 9:00 AM IST (UTC+5:30) every day
+  workflow_dispatch:         # allow manual trigger from GitHub UI
+
+jobs:
+  run-monitor:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run monitor
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT }}
+          SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+          SHEET_TAB_NAME: "Swiss Beauty"
+          BRAND_NAME: "Swiss Beauty"
+          BRAND_KEYWORDS: "Swiss Beauty,SwissBeauty,swiss beauty india"
+          RSS_FEEDS: "LinkedIn|https://rss.app/feeds/ylvqTkeFXjn7jRBo.xml|no"
+          RSS_FEEDS_2: "Reddit|https://rss.app/feeds/QuuIDvKATAncaqA7.xml|yes"
+          RSS_FEEDS_3: "Google News|https://news.google.com/rss/search?q=%22swiss+beauty%22&hl=en-IN&gl=IN&ceid=IN:en|yes"
+          RSS_FEEDS_4: "Twitter|https://rss.app/feeds/PVAJ8H37eWoMQySq.xml|yes"
+        run: python main.py

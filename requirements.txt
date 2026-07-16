@@ -1,0 +1,9 @@
+praw
+gspread
+google-auth
+openai
+python-dotenv
+requests
+beautifulsoup4
+feedparser
+twscrape
