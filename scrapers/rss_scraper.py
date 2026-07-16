@@ -1,9 +1,11 @@
 import feedparser
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from email.utils import parsedate_to_datetime
 from config import BRAND_KEYWORDS
+
+IST = timezone(timedelta(hours=5, minutes=30))
 
 HEADERS = {
     "User-Agent": (
@@ -40,7 +42,7 @@ def _keyword_match(text: str) -> bool:
 
 
 def fetch_feed(url: str, label: str, filter_keywords: bool = True) -> list[dict]:
-    today = datetime.now(timezone.utc).date()
+    today = datetime.now(IST).date()  # today's date in IST
     try:
         resp = requests.get(url, headers=HEADERS, timeout=15)
         resp.raise_for_status()
@@ -64,7 +66,7 @@ def fetch_feed(url: str, label: str, filter_keywords: bool = True) -> list[dict]
             continue
 
         pub_date = _parse_date(entry)
-        if not pub_date or pub_date.date() != today:
+        if not pub_date or pub_date.astimezone(IST).date() != today:
             continue
 
         author = (
