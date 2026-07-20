@@ -1,5 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
+from datetime import datetime, timedelta, timezone
 from config import GOOGLE_SERVICE_ACCOUNT_JSON, SPREADSHEET_ID
 
 SCOPES = [
@@ -8,6 +9,8 @@ SCOPES = [
 ]
 
 HEADERS = ["Title", "AI Title", "Category", "Source", "Summary", "Link", "Sentiment", "Date Added"]
+
+IST = timezone(timedelta(hours=5, minutes=30))
 
 _gc = None
 
@@ -28,47 +31,58 @@ def _get_or_create_tab(tab_name: str):
     except gspread.WorksheetNotFound:
         ws = spreadsheet.add_worksheet(title=tab_name, rows=2000, cols=len(HEADERS))
 
-    # Add header if tab is empty or header row is missing
     first_row = ws.row_values(1)
     if not first_row or first_row[0] != HEADERS[0]:
-        _init_header(ws, spreadsheet)
+        ws.insert_row(HEADERS, 1)
 
     return ws
 
 
-def _init_header(ws, spreadsheet):
-    ws.append_row(HEADERS)
+def _get_header_map(ws) -> dict:
+    """Returns {column_name: 1-based_index} from the sheet's actual header row."""
+    headers = ws.row_values(1)
+    return {h.strip(): i + 1 for i, h in enumerate(headers) if h.strip()}
 
 
 def get_existing_links(tab_name: str) -> set:
     ws = _get_or_create_tab(tab_name)
     try:
-        return set(ws.col_values(6)[1:])  # Column F = Link
+        header_map = _get_header_map(ws)
+        link_col = header_map.get("Link")
+        if not link_col:
+            return set()
+        return set(v for v in ws.col_values(link_col)[1:] if v)
     except Exception:
         return set()
-
-
 
 
 def append_mentions(tab_name: str, mentions: list[dict]):
     if not mentions:
         return
     ws = _get_or_create_tab(tab_name)
-    next_row = len(ws.get_all_values()) + 1
+    header_map = _get_header_map(ws)
+    today = datetime.now(IST).strftime("%Y-%m-%d")
 
-    from datetime import datetime
-    today = datetime.now().strftime("%Y-%m-%d")
-    rows = [[
-        m.get("title", ""),
-        m.get("ai_title", ""),
-        m.get("category", "General Mention"),
-        m.get("platform", tab_name),
-        m.get("summary", ""),
-        m.get("url", ""),
-        m.get("sentiment", "").capitalize(),
-        today,
-    ] for m in mentions]
+    # Map each mention to the sheet's actual column order
+    field_map = {
+        "Title":      lambda m: m.get("title", ""),
+        "AI Title":   lambda m: m.get("ai_title", ""),
+        "Category":   lambda m: m.get("category", "General Mention"),
+        "Source":     lambda m: m.get("platform", tab_name),
+        "Summary":    lambda m: m.get("summary", ""),
+        "Link":       lambda m: m.get("url", ""),
+        "Sentiment":  lambda m: m.get("sentiment", "").capitalize(),
+        "Date Added": lambda m: today,
+    }
+
+    num_cols = max(header_map.values())
+    rows = []
+    for m in mentions:
+        row = [""] * num_cols
+        for col_name, col_idx in header_map.items():
+            if col_name in field_map:
+                row[col_idx - 1] = field_map[col_name](m)
+        rows.append(row)
 
     ws.append_rows(rows, value_input_option="USER_ENTERED")
-
     print(f"  [sheets] Wrote {len(rows)} rows to tab '{tab_name}'")
