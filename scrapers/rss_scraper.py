@@ -20,18 +20,19 @@ def _clean_html(raw: str) -> str:
 
 
 def _parse_date(entry) -> datetime | None:
-    for field in ("published", "updated"):
-        val = entry.get(field, "")
-        if not val:
-            continue
-        try:
-            return parsedate_to_datetime(val).astimezone(timezone.utc)
-        except Exception:
-            pass
-        try:
-            return datetime.strptime(val, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
-        except Exception:
-            pass
+    # Only use `published` — never `updated`, which Google News stamps with today
+    # when resurfacing old articles, causing stale content to pass the date filter
+    val = entry.get("published", "")
+    if not val:
+        return None
+    try:
+        return parsedate_to_datetime(val).astimezone(timezone.utc)
+    except Exception:
+        pass
+    try:
+        return datetime.strptime(val, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    except Exception:
+        pass
     return None
 
 
