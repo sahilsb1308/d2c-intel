@@ -43,4 +43,12 @@ jobs:
           BRAND_2_RSS_FEEDS_2: "Reddit|https://rss.app/feeds/DwYXHpSWuRqrTd2v.xml|yes"
           BRAND_2_RSS_FEEDS_3: "Google News|https://rss.app/feeds/3ixQOnI02CXHE6mS.xml|yes"
           BRAND_2_RSS_FEEDS_4: "X|https://rss.app/feeds/QQZuTfNrXu48Xjt6.xml|yes"
+          # Renee
+          BRAND_3_NAME: "Renee Cosmetics"
+          BRAND_3_KEYWORDS: "Renee Cosmetics,Renee"
+          BRAND_3_TAB: "Renee"
+          BRAND_3_RSS_FEEDS: "LinkedIn|https://rss.app/feeds/VAnQfqiYb8kHHNUc.xml|no"
+          BRAND_3_RSS_FEEDS_2: "Reddit|https://rss.app/feeds/NGOzRd53svEYXwGH.xml|yes"
+          BRAND_3_RSS_FEEDS_3: "Google News|https://rss.app/feeds/SfCHZo9zzmPo5CgG.xml|yes"
+          BRAND_3_RSS_FEEDS_4: "X|https://rss.app/feeds/nc6XlDNc6A9mwDu0.xml|yes"
         run: python main.py
