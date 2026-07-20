@@ -36,6 +36,16 @@ def run_brand(brand: dict) -> list[dict]:
     processed = []
     for i, m in enumerate(all_new, 1):
         result = ai_processor.process(m, brand_name=name)
+
+        # Post-AI exclude check: drop if summary reveals off-topic content
+        # that the raw RSS text didn't expose (e.g. Switzerland context)
+        summary_lower = result.get("summary", "").lower()
+        title_lower = result.get("title", "").lower()
+        combined = f"{title_lower} {summary_lower}"
+        if exclude_keywords and any(kw in combined for kw in exclude_keywords):
+            print(f"  [{i}/{len(all_new)}] Dropped after AI (off-topic): {m['title'][:65]}")
+            continue
+
         processed.append(result)
         print(f"  [{i}/{len(all_new)}] [{result['category']}] {m['title'][:65]}")
 
