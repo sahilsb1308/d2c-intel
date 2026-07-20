@@ -43,6 +43,7 @@ def _keyword_match(text: str) -> bool:
 
 def fetch_feed(url: str, label: str, filter_keywords: bool = True) -> list[dict]:
     today = datetime.now(IST).date()  # today's date in IST
+    yesterday = today - timedelta(days=1)
     try:
         resp = requests.get(url, headers=HEADERS, timeout=15)
         resp.raise_for_status()
@@ -66,7 +67,7 @@ def fetch_feed(url: str, label: str, filter_keywords: bool = True) -> list[dict]
             continue
 
         pub_date = _parse_date(entry)
-        if not pub_date or pub_date.astimezone(IST).date() != today:
+        if not pub_date or pub_date.astimezone(IST).date() < yesterday:
             continue
 
         author = (
