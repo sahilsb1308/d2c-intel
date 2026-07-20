@@ -9,17 +9,6 @@ SCOPES = [
 
 HEADERS = ["Title", "Category", "Source", "Summary", "Link", "Sentiment", "Date Added"]
 
-CATEGORY_COLORS = {
-    "Product Review":     {"red": 0.8,  "green": 0.9,  "blue": 1.0},
-    "Customer Complaint": {"red": 1.0,  "green": 0.8,  "blue": 0.8},
-    "Recommendation":     {"red": 0.8,  "green": 1.0,  "blue": 0.8},
-    "Partnership":        {"red": 0.85, "green": 0.75, "blue": 1.0},
-    "Campaign":           {"red": 1.0,  "green": 0.95, "blue": 0.7},
-    "News Coverage":      {"red": 0.95, "green": 0.95, "blue": 0.95},
-    "Thought Leadership": {"red": 1.0,  "green": 0.88, "blue": 0.8},
-    "General Mention":    {"red": 1.0,  "green": 1.0,  "blue": 1.0},
-}
-
 _gc = None
 
 
@@ -49,36 +38,6 @@ def _get_or_create_tab(tab_name: str):
 
 def _init_header(ws, spreadsheet):
     ws.append_row(HEADERS)
-    ws.format("A1:E1", {
-        "textFormat": {"bold": True, "fontSize": 11},
-        "backgroundColor": {"red": 0.13, "green": 0.13, "blue": 0.13},
-        "horizontalAlignment": "CENTER",
-        "textFormat": {"bold": True, "foregroundColor": {"red": 1, "green": 1, "blue": 1}},
-    })
-    spreadsheet.batch_update({"requests": [
-        # Column widths
-        *[{
-            "updateDimensionProperties": {
-                "range": {"sheetId": ws.id, "dimension": "COLUMNS", "startIndex": i, "endIndex": i + 1},
-                "properties": {"pixelSize": size},
-                "fields": "pixelSize",
-            }
-        } for i, size in enumerate([280, 160, 100, 520, 320])],
-        # Category dropdown on column B
-        {
-            "setDataValidation": {
-                "range": {"sheetId": ws.id, "startRowIndex": 1, "endRowIndex": 2000, "startColumnIndex": 1, "endColumnIndex": 2},
-                "rule": {
-                    "condition": {
-                        "type": "ONE_OF_LIST",
-                        "values": [{"userEnteredValue": c} for c in CATEGORY_COLORS.keys()],
-                    },
-                    "showCustomUi": True,
-                    "strict": True,
-                }
-            }
-        },
-    ]})
 
 
 def get_existing_links(tab_name: str) -> set:
@@ -110,33 +69,5 @@ def append_mentions(tab_name: str, mentions: list[dict]):
     ] for m in mentions]
 
     ws.append_rows(rows, value_input_option="USER_ENTERED")
-
-    # Format each new row
-    requests = []
-    for i, m in enumerate(mentions):
-        r = next_row + i
-        color = CATEGORY_COLORS.get(m.get("category", "General Mention"), CATEGORY_COLORS["General Mention"])
-
-        # Category cell (col B = index 1) — colored background, bold, centered
-        requests.append({"repeatCell": {
-            "range": {"sheetId": ws.id, "startRowIndex": r - 1, "endRowIndex": r, "startColumnIndex": 1, "endColumnIndex": 2},
-            "cell": {"userEnteredFormat": {
-                "backgroundColor": color,
-                "horizontalAlignment": "CENTER",
-                "textFormat": {"bold": True},
-                "wrapStrategy": "WRAP",
-            }},
-            "fields": "userEnteredFormat(backgroundColor,horizontalAlignment,textFormat,wrapStrategy)",
-        }})
-
-        # Summary cell (col D = index 3) — wrap + top align
-        requests.append({"repeatCell": {
-            "range": {"sheetId": ws.id, "startRowIndex": r - 1, "endRowIndex": r, "startColumnIndex": 3, "endColumnIndex": 4},
-            "cell": {"userEnteredFormat": {"wrapStrategy": "WRAP", "verticalAlignment": "TOP"}},
-            "fields": "userEnteredFormat(wrapStrategy,verticalAlignment)",
-        }})
-
-    if requests:
-        ws.spreadsheet.batch_update({"requests": requests})
 
     print(f"  [sheets] Wrote {len(rows)} rows to tab '{tab_name}'")
