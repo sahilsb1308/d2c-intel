@@ -2,7 +2,7 @@ name: Swiss Beauty Daily Monitor
 
 on:
   schedule:
-    - cron: "30 18 * * *"  # 12:00 AM IST next day (UTC+5:30) — fetches yesterday's posts
+    - cron: "30 17 * * *"  # 11:00 PM IST — fetches today's posts
   workflow_dispatch:         # allow manual trigger from GitHub UI
 
 jobs:
