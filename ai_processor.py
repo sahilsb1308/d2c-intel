@@ -82,6 +82,8 @@ def process(mention: dict, brand_name: str = "the brand") -> dict:
 
 Given a post or article, return a JSON object with exactly these keys:
 
+"ai_title": A single punchy headline under 10 words summarising the post for {brand_name}. No fluff. Example: "UAE expansion via Modist Global partnership" or "Reddit user complains about lip liner quality".
+
 "summary": 3-5 sentence analyst-style briefing in third person. Explain: what the post says, who posted it, the context, and why it matters for {brand_name}. Do NOT start with the brand name. Be specific — mention product names, people, events if present.
 
 "category": Classify using these rules:
@@ -112,6 +114,7 @@ Available categories: {json.dumps(CATEGORIES)}
 
         return {
             **mention,
+            "ai_title": data.get("ai_title", title[:80]),
             "summary": data.get("summary", ""),
             "category": category,
             "sentiment": data.get("sentiment", "neutral"),
@@ -120,6 +123,7 @@ Available categories: {json.dumps(CATEGORIES)}
         print(f"  [ai] Error processing '{title[:50]}': {e}")
         return {
             **mention,
+            "ai_title": title[:80],
             "summary": content[:500],
             "category": "General Mention",
             "sentiment": "neutral",

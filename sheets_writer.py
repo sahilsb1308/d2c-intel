@@ -7,7 +7,7 @@ SCOPES = [
     "https://www.googleapis.com/auth/drive",
 ]
 
-HEADERS = ["Title", "Category", "Source", "Summary", "Link", "Sentiment", "Date Added"]
+HEADERS = ["Title", "AI Title", "Category", "Source", "Summary", "Link", "Sentiment", "Date Added"]
 
 _gc = None
 
@@ -43,7 +43,7 @@ def _init_header(ws, spreadsheet):
 def get_existing_links(tab_name: str) -> set:
     ws = _get_or_create_tab(tab_name)
     try:
-        return set(ws.col_values(5)[1:])  # Column E = Link
+        return set(ws.col_values(6)[1:])  # Column F = Link
     except Exception:
         return set()
 
@@ -60,6 +60,7 @@ def append_mentions(tab_name: str, mentions: list[dict]):
     today = datetime.now().strftime("%Y-%m-%d")
     rows = [[
         m.get("title", ""),
+        m.get("ai_title", ""),
         m.get("category", "General Mention"),
         m.get("platform", tab_name),
         m.get("summary", ""),
