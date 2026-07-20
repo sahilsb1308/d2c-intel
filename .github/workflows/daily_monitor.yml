@@ -30,8 +30,17 @@ jobs:
           SHEET_TAB_NAME: "Swiss Beauty"
           BRAND_NAME: "Swiss Beauty"
           BRAND_KEYWORDS: "Swiss Beauty,SwissBeauty,swiss beauty india"
+          # Swiss Beauty
           RSS_FEEDS: "LinkedIn|https://rss.app/feeds/ylvqTkeFXjn7jRBo.xml|no"
           RSS_FEEDS_2: "Reddit|https://rss.app/feeds/QuuIDvKATAncaqA7.xml|yes"
           RSS_FEEDS_3: "Google News|https://rss.app/feeds/g6mhwU1ZXisX9XYP.xml|yes"
           RSS_FEEDS_4: "X|https://rss.app/feeds/PVAJ8H37eWoMQySq.xml|yes"
+          # Mars
+          BRAND_2_NAME: "Mars"
+          BRAND_2_KEYWORDS: "Mars Cosmetics,Mars by GHC,Mars"
+          BRAND_2_TAB: "Mars"
+          BRAND_2_RSS_FEEDS: "LinkedIn|https://rss.app/feeds/JGxIlsDvGV083wXA.xml|no"
+          BRAND_2_RSS_FEEDS_2: "Reddit|https://rss.app/feeds/DwYXHpSWuRqrTd2v.xml|yes"
+          BRAND_2_RSS_FEEDS_3: "Google News|https://rss.app/feeds/3ixQOnI02CXHE6mS.xml|yes"
+          BRAND_2_RSS_FEEDS_4: "X|https://rss.app/feeds/QQZuTfNrXu48Xjt6.xml|yes"
         run: python main.py

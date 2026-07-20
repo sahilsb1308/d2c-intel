@@ -3,7 +3,6 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timezone, timedelta
 from email.utils import parsedate_to_datetime
-from config import BRAND_KEYWORDS
 
 IST = timezone(timedelta(hours=5, minutes=30))
 
@@ -36,13 +35,13 @@ def _parse_date(entry) -> datetime | None:
     return None
 
 
-def _keyword_match(text: str) -> bool:
+def _keyword_match(text: str, keywords: list[str]) -> bool:
     t = text.lower()
-    return any(kw.lower() in t for kw in BRAND_KEYWORDS)
+    return any(kw.lower() in t for kw in keywords)
 
 
-def fetch_feed(url: str, label: str, filter_keywords: bool = True) -> list[dict]:
-    today = datetime.now(IST).date()  # today's date in IST
+def fetch_feed(url: str, label: str, keywords: list[str], filter_keywords: bool = True) -> list[dict]:
+    today = datetime.now(IST).date()
     yesterday = today - timedelta(days=1)
     try:
         resp = requests.get(url, headers=HEADERS, timeout=15)
@@ -63,7 +62,7 @@ def fetch_feed(url: str, label: str, filter_keywords: bool = True) -> list[dict]
         content_raw = entry["content"][0].get("value", "") if entry.get("content") else ""
         full_text = _clean_html(content_raw or summary_raw)
 
-        if filter_keywords and not _keyword_match(f"{title} {full_text}"):
+        if filter_keywords and not _keyword_match(f"{title} {full_text}", keywords):
             continue
 
         pub_date = _parse_date(entry)
