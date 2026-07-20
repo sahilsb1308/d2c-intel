@@ -18,16 +18,12 @@ def run_brand(brand: dict) -> list[dict]:
     print(f"Writing to tab: '{tab}'")
     print("="*60)
 
-    existing = sheets_writer.get_existing_links(tab)
-    print(f"\n{len(existing)} posts already tracked in sheet")
-
     all_new = []
     for feed_cfg in feeds:
         label = feed_cfg["label"]
         raw = fetch_feed(feed_cfg["url"], label, keywords=keywords, filter_keywords=feed_cfg.get("filter_keywords", True))
-        new = [m for m in raw if m["url"] not in existing]
-        print(f"  [{label}] {len(raw)} fetched | {len(new)} new")
-        all_new.extend(new)
+        print(f"  [{label}] {len(raw)} fetched")
+        all_new.extend(raw)
 
     if not all_new:
         print("\nNothing new. Done.")
