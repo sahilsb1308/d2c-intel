@@ -1,0 +1,264 @@
+{
+  "name": "D2C Intel - Email Alerts",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 18 * * *"
+            }
+          ]
+        }
+      },
+      "id": "node-schedule",
+      "name": "Schedule 11:30 PM IST",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 400]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "documentId": {
+          "__rl": true,
+          "value": "1XJgktxMC8KQAUCkDWWJon_IoDqknn7s8HkMWEUqXtj8",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Swiss Beauty",
+          "mode": "name"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Date Added",
+              "lookupValue": "={{ $now.toFormat('yyyy-MM-dd') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "node-gs-swiss",
+      "name": "Get Swiss Beauty Rows",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [480, 200],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "REPLACE_WITH_YOUR_GOOGLE_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "brand-swiss",
+              "name": "brand",
+              "value": "Swiss Beauty",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {
+          "includeOtherFields": true
+        }
+      },
+      "id": "node-set-swiss",
+      "name": "Tag Swiss Beauty",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [700, 200]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "documentId": {
+          "__rl": true,
+          "value": "1XJgktxMC8KQAUCkDWWJon_IoDqknn7s8HkMWEUqXtj8",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Mars",
+          "mode": "name"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Date Added",
+              "lookupValue": "={{ $now.toFormat('yyyy-MM-dd') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "node-gs-mars",
+      "name": "Get Mars Rows",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [480, 400],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "REPLACE_WITH_YOUR_GOOGLE_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "brand-mars",
+              "name": "brand",
+              "value": "Mars",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {
+          "includeOtherFields": true
+        }
+      },
+      "id": "node-set-mars",
+      "name": "Tag Mars",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [700, 400]
+    },
+    {
+      "parameters": {
+        "operation": "read",
+        "documentId": {
+          "__rl": true,
+          "value": "1XJgktxMC8KQAUCkDWWJon_IoDqknn7s8HkMWEUqXtj8",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Renee",
+          "mode": "name"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Date Added",
+              "lookupValue": "={{ $now.toFormat('yyyy-MM-dd') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "node-gs-renee",
+      "name": "Get Renee Rows",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [480, 600],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "REPLACE_WITH_YOUR_GOOGLE_CREDENTIAL_ID",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "brand-renee",
+              "name": "brand",
+              "value": "Renee Cosmetics",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {
+          "includeOtherFields": true
+        }
+      },
+      "id": "node-set-renee",
+      "name": "Tag Renee",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [700, 600]
+    },
+    {
+      "parameters": {
+        "mode": "append",
+        "options": {}
+      },
+      "id": "node-merge",
+      "name": "Merge All Brands",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [920, 400]
+    },
+    {
+      "parameters": {
+        "sendTo": "sahil.gaur@swissbeauty.in",
+        "subject": "={{ $json.brand }} — {{ $json['AI Title'] }}",
+        "emailType": "html",
+        "message": "=<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e5e5e5; border-radius: 6px; overflow: hidden;\">\n\n  <div style=\"background: #1a1a1a; padding: 20px 24px;\">\n    <p style=\"margin: 0; color: #aaa; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;\">{{ $json.brand }} Intel</p>\n    <h1 style=\"margin: 6px 0 0; color: #fff; font-size: 18px; line-height: 1.4;\">{{ $json['AI Title'] }}</h1>\n  </div>\n\n  <div style=\"padding: 20px 24px; background: #fff;\">\n    <table style=\"width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13px;\">\n      <tr>\n        <td style=\"padding: 6px 0; color: #888; width: 90px;\">Category</td>\n        <td style=\"padding: 6px 0; font-weight: 600; color: #1a1a1a;\">{{ $json.Category }}</td>\n      </tr>\n      <tr>\n        <td style=\"padding: 6px 0; color: #888;\">Sentiment</td>\n        <td style=\"padding: 6px 0; font-weight: 600; color: #1a1a1a;\">{{ $json.Sentiment }}</td>\n      </tr>\n      <tr>\n        <td style=\"padding: 6px 0; color: #888;\">Source</td>\n        <td style=\"padding: 6px 0; font-weight: 600; color: #1a1a1a;\">{{ $json.Source }}</td>\n      </tr>\n      <tr>\n        <td style=\"padding: 6px 0; color: #888;\">Date</td>\n        <td style=\"padding: 6px 0; font-weight: 600; color: #1a1a1a;\">{{ $json['Date Added'] }}</td>\n      </tr>\n    </table>\n\n    <h2 style=\"font-size: 15px; color: #1a1a1a; margin: 0 0 10px;\">{{ $json.Title }}</h2>\n    <p style=\"font-size: 14px; color: #444; line-height: 1.7; margin: 0 0 20px;\">{{ $json.Summary }}</p>\n\n    <a href=\"{{ $json.Link }}\" style=\"display: inline-block; padding: 10px 20px; background: #1a1a1a; color: #fff; text-decoration: none; border-radius: 4px; font-size: 13px;\">Read Full Post →</a>\n  </div>\n\n  <div style=\"padding: 12px 24px; background: #f9f9f9; border-top: 1px solid #e5e5e5;\">\n    <p style=\"margin: 0; font-size: 11px; color: #aaa;\">D2C Intel Tracker · Automated alert</p>\n  </div>\n\n</div>",
+        "options": {}
+      },
+      "id": "node-email",
+      "name": "Send Email Alert",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [1140, 400],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "REPLACE_WITH_YOUR_GOOGLE_CREDENTIAL_ID",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule 11:30 PM IST": {
+      "main": [
+        [
+          {"node": "Get Swiss Beauty Rows", "type": "main", "index": 0},
+          {"node": "Get Mars Rows", "type": "main", "index": 0},
+          {"node": "Get Renee Rows", "type": "main", "index": 0}
+        ]
+      ]
+    },
+    "Get Swiss Beauty Rows": {
+      "main": [[{"node": "Tag Swiss Beauty", "type": "main", "index": 0}]]
+    },
+    "Tag Swiss Beauty": {
+      "main": [[{"node": "Merge All Brands", "type": "main", "index": 0}]]
+    },
+    "Get Mars Rows": {
+      "main": [[{"node": "Tag Mars", "type": "main", "index": 0}]]
+    },
+    "Tag Mars": {
+      "main": [[{"node": "Merge All Brands", "type": "main", "index": 1}]]
+    },
+    "Get Renee Rows": {
+      "main": [[{"node": "Tag Renee", "type": "main", "index": 0}]]
+    },
+    "Tag Renee": {
+      "main": [[{"node": "Merge All Brands", "type": "main", "index": 2}]]
+    },
+    "Merge All Brands": {
+      "main": [[{"node": "Send Email Alert", "type": "main", "index": 0}]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}
