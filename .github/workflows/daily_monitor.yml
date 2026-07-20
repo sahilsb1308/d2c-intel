@@ -27,6 +27,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT }}
           SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+          N8N_WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL }}
           SHEET_TAB_NAME: "Swiss Beauty"
           BRAND_NAME: "Swiss Beauty"
           BRAND_KEYWORDS: "Swiss Beauty,SwissBeauty,swiss beauty india"
