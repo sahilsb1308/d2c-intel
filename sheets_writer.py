@@ -32,8 +32,8 @@ def _get_or_create_tab(tab_name: str):
         ws = spreadsheet.add_worksheet(title=tab_name, rows=2000, cols=len(HEADERS))
 
     first_row = ws.row_values(1)
-    if not first_row or first_row[0] != HEADERS[0]:
-        ws.insert_row(HEADERS, 1)
+    if list(first_row[:len(HEADERS)]) != HEADERS:
+        ws.update("A1", [HEADERS])
 
     return ws
 
