@@ -84,7 +84,12 @@ def _keyword_match(text: str, keywords: list[str]) -> bool:
     return any(kw.lower() in t for kw in keywords)
 
 
-def fetch_feed(url: str, label: str, keywords: list[str], filter_keywords: bool = True) -> list[dict]:
+def _exclude_match(text: str, exclude_keywords: list[str]) -> bool:
+    t = text.lower()
+    return any(kw in t for kw in exclude_keywords)
+
+
+def fetch_feed(url: str, label: str, keywords: list[str], filter_keywords: bool = True, exclude_keywords: list[str] | None = None) -> list[dict]:
     today = datetime.now(IST).date()
     try:
         resp = requests.get(url, headers=HEADERS, timeout=15)
@@ -106,6 +111,10 @@ def fetch_feed(url: str, label: str, keywords: list[str], filter_keywords: bool 
         full_text = _clean_html(content_raw or summary_raw)
 
         if filter_keywords and not _keyword_match(f"{title} {full_text}", keywords):
+            continue
+
+        if exclude_keywords and _exclude_match(f"{title} {full_text}", exclude_keywords):
+            print(f"  [{label}] Excluded (off-topic): {title[:60]}")
             continue
 
         # First pass: check RSS published date

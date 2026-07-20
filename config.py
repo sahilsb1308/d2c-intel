@@ -41,6 +41,11 @@ def _load_rss_feeds_for_prefix(prefix: str) -> list[dict]:
     return feeds
 
 
+def _load_exclude_keywords(prefix: str) -> list[str]:
+    val = os.getenv(f"{prefix}EXCLUDE_KEYWORDS", "").strip()
+    return [k.strip().lower() for k in val.split(",") if k.strip()]
+
+
 def _load_brands() -> list[dict]:
     brands = []
 
@@ -50,6 +55,7 @@ def _load_brands() -> list[dict]:
         brands.append({
             "name": BRAND_NAME,
             "keywords": BRAND_KEYWORDS,
+            "exclude_keywords": _load_exclude_keywords(""),
             "tab": SHEET_TAB_NAME,
             "feeds": feeds,
         })
@@ -65,6 +71,7 @@ def _load_brands() -> list[dict]:
         brands.append({
             "name": name,
             "keywords": keywords,
+            "exclude_keywords": _load_exclude_keywords(f"BRAND_{n}_"),
             "tab": tab,
             "feeds": feeds,
         })

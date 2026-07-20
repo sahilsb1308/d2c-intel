@@ -18,10 +18,13 @@ def run_brand(brand: dict) -> list[dict]:
     print(f"Writing to tab: '{tab}'")
     print("="*60)
 
+    exclude_keywords = brand.get("exclude_keywords", [])
     all_new = []
     for feed_cfg in feeds:
         label = feed_cfg["label"]
-        raw = fetch_feed(feed_cfg["url"], label, keywords=keywords, filter_keywords=feed_cfg.get("filter_keywords", True))
+        raw = fetch_feed(feed_cfg["url"], label, keywords=keywords,
+                         filter_keywords=feed_cfg.get("filter_keywords", True),
+                         exclude_keywords=exclude_keywords)
         print(f"  [{label}] {len(raw)} fetched")
         all_new.extend(raw)
 

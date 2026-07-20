@@ -31,7 +31,8 @@ jobs:
           SHEET_TAB_NAME: "Swiss Beauty"
           BRAND_NAME: "Swiss Beauty"
           BRAND_KEYWORDS: "Swiss Beauty,SwissBeauty,swiss beauty india"
-          # Swiss Beauty
+          EXCLUDE_KEYWORDS: "switzerland,swiss alps,swiss army,swiss franc,zürich,zurich,swiss cheese,swiss miss,geneva,bern,lausanne,swiss made,swiss watch,swiss chocolate,swiss bank"
+          # Swiss Beauty RSS feeds
           RSS_FEEDS: "LinkedIn|https://rss.app/feeds/ylvqTkeFXjn7jRBo.xml|no"
           RSS_FEEDS_2: "Reddit|https://rss.app/feeds/QuuIDvKATAncaqA7.xml|yes"
           RSS_FEEDS_3: "Google News|https://rss.app/feeds/g6mhwU1ZXisX9XYP.xml|yes"
@@ -40,6 +41,7 @@ jobs:
           BRAND_2_NAME: "Mars"
           BRAND_2_KEYWORDS: "Mars Cosmetics,Mars by GHC,Mars"
           BRAND_2_TAB: "Mars"
+          BRAND_2_EXCLUDE_KEYWORDS: "planet mars,mars rover,mars mission,elon musk,spacex,nasa,mars bar,mars chocolate,candy bar,snickers,red planet,space exploration"
           BRAND_2_RSS_FEEDS: "LinkedIn|https://rss.app/feeds/JGxIlsDvGV083wXA.xml|no"
           BRAND_2_RSS_FEEDS_2: "Reddit|https://rss.app/feeds/DwYXHpSWuRqrTd2v.xml|yes"
           BRAND_2_RSS_FEEDS_3: "Google News|https://rss.app/feeds/3ixQOnI02CXHE6mS.xml|yes"
