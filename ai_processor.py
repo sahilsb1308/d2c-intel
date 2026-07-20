@@ -82,13 +82,13 @@ def process(mention: dict, brand_name: str = "the brand") -> dict:
 
 Given a post or article, return a JSON object with exactly these keys:
 
-"summary": 3-5 sentence analyst-style briefing in third person. Explain: what the post says, who posted it, the context, and why it matters for {BRAND_NAME}. Do NOT start with the brand name. Be specific — mention product names, people, events if present.
+"summary": 3-5 sentence analyst-style briefing in third person. Explain: what the post says, who posted it, the context, and why it matters for {brand_name}. Do NOT start with the brand name. Be specific — mention product names, people, events if present.
 
 "category": Classify using these rules:
-{CATEGORY_RULES}
+{CATEGORY_RULES.format(brand_name=brand_name)}
 
 "sentiment": Classify using these rules:
-{SENTIMENT_RULES}
+{SENTIMENT_RULES.format(brand_name=brand_name)}
 
 Platform: {platform}
 Available categories: {json.dumps(CATEGORIES)}
