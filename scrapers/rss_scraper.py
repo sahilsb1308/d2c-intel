@@ -80,6 +80,7 @@ def fetch_feed(url: str, label: str, keywords: list[str], filter_keywords: bool 
             "title": title,
             "author": author,
             "post_date": pub_date.strftime("%Y-%m-%d %H:%M UTC") if pub_date else "",
+            "published_date": pub_date.astimezone(IST).strftime("%Y-%m-%d") if pub_date else "",
             "content": full_text[:2000],
         })
 

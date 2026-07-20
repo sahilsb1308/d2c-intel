@@ -72,7 +72,7 @@ def append_mentions(tab_name: str, mentions: list[dict]):
         "Summary":    lambda m: m.get("summary", ""),
         "Link":       lambda m: m.get("url", ""),
         "Sentiment":  lambda m: m.get("sentiment", "").capitalize(),
-        "Date Added": lambda m: today,
+        "Date Added": lambda m: m.get("published_date") or today,
     }
 
     num_cols = max(header_map.values())

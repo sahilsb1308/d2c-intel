@@ -51,17 +51,40 @@ IMPORTANT GUARDRAILS:
 """
 
 SENTIMENT_RULES = """
-Determine sentiment based on the author's attitude toward {brand_name} specifically:
+Determine sentiment from the perspective of what this news means FOR {brand_name} as a business:
 
-- **positive** — praise, satisfaction, excitement, gratitude, pride, endorsement
-- **negative** — complaint, disappointment, distrust, warning others, frustration
-- **neutral** — factual reporting, passing mention, no clear opinion expressed, deal alerts, Switzerland references
+**positive** — good news for the brand:
+- Funding raised, investment secured, valuation milestone
+- Expansion (new stores, new markets, new distribution)
+- Leadership hire (new CMO, CFO, VP appointment)
+- Revenue milestone, growth numbers, market share gain
+- Partnership, brand ambassador, collaboration deal
+- Winning an award, positive analyst coverage
+- User praising the product, recommending it, satisfied review
+- Brand launching a campaign or new product
 
-IMPORTANT:
-- News articles are usually neutral unless they report something negative (e.g. CEO exit, funding failure)
-- Campaign posts from the brand itself are positive
-- "Influence/Deinfluence" posts asking for opinions → neutral until opinion is clear
-- Complaints are always negative even if politely worded
+**negative** — bad news for the brand:
+- Customer complaint, product failure, bad review
+- CEO/founder exit, leadership controversy
+- Legal issue, regulatory problem, PR crisis
+- Competitor explicitly beating them, market share loss
+- Funding failure, layoffs, store closures
+- User warning others not to buy
+
+**neutral** — no clear business impact:
+- Pure factual market report with no positive or negative angle
+- Brand mentioned in passing without context
+- Deal/coupon alert from a third-party account
+- "Swiss beauty" referring to Switzerland
+
+CRITICAL RULES:
+- Funding news = ALWAYS positive (money coming in = good)
+- Expansion news = ALWAYS positive (growth = good)
+- New leadership hire = positive (unless replacing someone who left controversially)
+- Awards/recognition = positive
+- Complaints = ALWAYS negative even if politely worded
+- Do NOT default to neutral for news articles — read the actual content and judge if it's good or bad for the brand
+- If in doubt between positive and neutral, choose positive for growth/expansion/investment stories
 """
 
 
