@@ -37,6 +37,33 @@ def _parse_date(entry) -> datetime | None:
     return None
 
 
+_MONTH_MAP = {
+    'jan': 1, 'feb': 2, 'mar': 3, 'apr': 4, 'may': 5, 'jun': 6,
+    'jul': 7, 'aug': 8, 'sep': 9, 'oct': 10, 'nov': 11, 'dec': 12
+}
+
+
+def _parse_text_date(text: str) -> datetime | None:
+    """Parse human-readable dates like 'Jun 11, 2026' or '11 June 2026' from page text."""
+    # "Jun 11, 2026" or "June 11, 2026"
+    m = re.search(r'(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+(\d{1,2}),?\s+(20\d{2})', text, re.IGNORECASE)
+    if m:
+        try:
+            month = _MONTH_MAP[m.group(1)[:3].lower()]
+            return datetime(int(m.group(3)), month, int(m.group(2)), tzinfo=timezone.utc)
+        except Exception:
+            pass
+    # "11 Jun 2026" or "11 June 2026"
+    m = re.search(r'(\d{1,2})\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+(20\d{2})', text, re.IGNORECASE)
+    if m:
+        try:
+            month = _MONTH_MAP[m.group(2)[:3].lower()]
+            return datetime(int(m.group(3)), month, int(m.group(1)), tzinfo=timezone.utc)
+        except Exception:
+            pass
+    return None
+
+
 def _fetch_article_date(url: str) -> datetime | None:
     """Fetch the article page and extract its actual published date from meta tags.
     Used to catch RSS feeds that stamp old articles with today's date."""
@@ -75,10 +102,22 @@ def _fetch_article_date(url: str) -> datetime | None:
             except Exception:
                 pass
 
+        # Try elements with date-related class/id names (e.g. byline, post-date)
+        date_el = soup.find(class_=re.compile(r'date|publish|byline|posted|timestamp', re.I))
+        if date_el:
+            parsed = _parse_text_date(date_el.get_text())
+            if parsed:
+                return parsed
+
+        # Last resort: scan first 3000 chars of page text for a date pattern
+        parsed = _parse_text_date(soup.get_text()[:3000])
+        if parsed:
+            return parsed
+
     except Exception:
         pass
 
-    # Fallback: extract date from URL path e.g. /2026/01/20/ or /20-jan-2026/
+    # Fallback: extract date from URL path e.g. /2026/01/20/
     m = re.search(r'/(\d{4})[/-](\d{2})[/-](\d{2})/', url)
     if m:
         try:
