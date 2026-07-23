@@ -111,18 +111,20 @@ def _fetch_article_date(url: str) -> datetime | None:
             if parsed:
                 return parsed
 
-        # Look for "Published" keyword context in full page text — catches
-        # sites like indiaretailing.com that show "Published On : Mon, 2 Feb 2026"
-        full_text = soup.get_text()
-        pub_match = re.search(r'[Pp]ublish(?:ed)?\s*[Oo]n?\s*[:\-]?\s*(.{5,60})', full_text)
+        # Normalize page text to single line (avoids newline breaks mid-date)
+        full_text = soup.get_text(separator=' ', strip=True)
+
+        # Look for "Published" keyword context — catches sites like indiaretailing.com
+        # that show "Published On : Mon, 2 Feb 2026 , 12 : 35 pm"
+        pub_match = re.search(r'[Pp]ublish(?:ed)?\s*[Oo]n?\s*[:\-]?\s*(.{5,80})', full_text)
         if pub_match:
             parsed = _parse_text_date(pub_match.group(1))
             if parsed:
                 return parsed
 
-        # Last resort: scan page text but skip first 500 chars (usually nav/header
-        # with live clock) to avoid picking up the site's current-date display
-        parsed = _parse_text_date(full_text[500:4000])
+        # Last resort: scan page text but skip first 500 chars (nav/header with live
+        # clock) to avoid picking up the site's current-date display
+        parsed = _parse_text_date(full_text[500:5000])
         if parsed:
             return parsed
 
