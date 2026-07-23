@@ -38,13 +38,20 @@ def run_brand(brand: dict) -> list[dict]:
         result = ai_processor.process(m, brand_name=name)
 
         # Post-AI exclude check: drop if summary reveals off-topic content
-        # that the raw RSS text didn't expose (e.g. Switzerland context)
         summary_lower = result.get("summary", "").lower()
         title_lower = result.get("title", "").lower()
         combined = f"{title_lower} {summary_lower}"
         if exclude_keywords and any(kw in combined for kw in exclude_keywords):
             print(f"  [{i}/{len(all_new)}] Dropped after AI (off-topic): {m['title'][:65]}")
             continue
+
+        # Drop General Mention posts where the brand name doesn't appear in the summary
+        # — catches noisy X/Reddit posts that matched keywords but aren't about the brand
+        if result.get("category") == "General Mention":
+            brand_mentioned = any(kw.lower() in combined for kw in keywords)
+            if not brand_mentioned:
+                print(f"  [{i}/{len(all_new)}] Dropped (off-brand General Mention): {m['title'][:65]}")
+                continue
 
         processed.append(result)
         print(f"  [{i}/{len(all_new)}] [{result['category']}] {m['title'][:65]}")

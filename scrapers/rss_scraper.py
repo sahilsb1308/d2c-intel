@@ -1,3 +1,4 @@
+import re
 import feedparser
 import requests
 from bs4 import BeautifulSoup
@@ -76,6 +77,16 @@ def _fetch_article_date(url: str) -> datetime | None:
 
     except Exception:
         pass
+
+    # Fallback: extract date from URL path e.g. /2026/01/20/ or /20-jan-2026/
+    m = re.search(r'/(\d{4})[/-](\d{2})[/-](\d{2})/', url)
+    if m:
+        try:
+            return datetime(int(m.group(1)), int(m.group(2)), int(m.group(3)),
+                            tzinfo=timezone.utc)
+        except Exception:
+            pass
+
     return None
 
 

@@ -130,7 +130,7 @@
       "parameters": {
         "operation": "read",
         "documentId": {"__rl": true, "value": "1XJgktxMC8KQAUCkDWWJon_IoDqknn7s8HkMWEUqXtj8", "mode": "id"},
-        "sheetName": {"__rl": true, "value": "Stayz", "mode": "name"},
+        "sheetName": {"__rl": true, "value": "Staze Beauty", "mode": "name"},
         "filtersUI": {"values": [{"lookupColumn": "Date Added", "lookupValue": "={{ $now.toFormat('yyyy-MM-dd') }}"}]},
         "options": {}
       },
