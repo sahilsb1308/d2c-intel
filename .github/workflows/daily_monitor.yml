@@ -54,4 +54,32 @@ jobs:
           BRAND_3_RSS_FEEDS_2: "Reddit|https://rss.app/feeds/NGOzRd53svEYXwGH.xml|yes"
           BRAND_3_RSS_FEEDS_3: "Google News|https://rss.app/feeds/SfCHZo9zzmPo5CgG.xml|yes"
           BRAND_3_RSS_FEEDS_4: "X|https://rss.app/feeds/nc6XlDNc6A9mwDu0.xml|yes"
+          # Blueheaven
+          BRAND_4_NAME: "Blue Heaven"
+          BRAND_4_KEYWORDS: "Blue Heaven,BlueHeaven,Blue Heaven cosmetics"
+          BRAND_4_TAB: "Blueheaven"
+          BRAND_4_RSS_FEEDS: "Reddit|https://www.reddit.com/search.rss?q=Blueheaven+cosmetics&sort=new|yes"
+          BRAND_4_RSS_FEEDS_2: "Google News|https://rss.app/feeds/RbrjEvFAVEZeWJN4.xml|yes"
+          BRAND_4_RSS_FEEDS_3: "X|https://rss.app/feeds/mdRjno2ADnYxhkZL.xml|yes"
+          # Lakme
+          BRAND_5_NAME: "Lakme"
+          BRAND_5_KEYWORDS: "Lakme,Lakmé,Lakme India"
+          BRAND_5_TAB: "Lakme"
+          BRAND_5_RSS_FEEDS: "Reddit|https://rss.app/feeds/TvdKvvTDdZQ44otZ.xml|yes"
+          BRAND_5_RSS_FEEDS_2: "Google News|https://rss.app/feeds/SRdJA1q6V5CL7XiB.xml|yes"
+          BRAND_5_RSS_FEEDS_3: "X|https://rss.app/feeds/79K8NcR7NYVqZUiF.xml|yes"
+          # Maybelline
+          BRAND_6_NAME: "Maybelline"
+          BRAND_6_KEYWORDS: "Maybelline,Maybelline India,Maybelline New York"
+          BRAND_6_TAB: "Maybelline"
+          BRAND_6_RSS_FEEDS: "Reddit|https://rss.app/feeds/cDdmQ1V1ylQM7tL6.xml|yes"
+          BRAND_6_RSS_FEEDS_2: "Google News|https://rss.app/feeds/Sref0sVcVKJPEdSo.xml|yes"
+          BRAND_6_RSS_FEEDS_3: "X|https://rss.app/feeds/oX1pw3e7jAo2WDSb.xml|yes"
+          # Staze Beauty
+          BRAND_7_NAME: "Staze Beauty"
+          BRAND_7_KEYWORDS: "Staze Beauty,Staze"
+          BRAND_7_TAB: "Stayz"
+          BRAND_7_RSS_FEEDS: "Reddit|https://rss.app/feeds/FJHSc1Gigdci3zTo.xml|yes"
+          BRAND_7_RSS_FEEDS_2: "Google News|https://rss.app/feeds/izwEaFGb6jWiz3vR.xml|yes"
+          BRAND_7_RSS_FEEDS_3: "X|https://rss.app/feeds/yqgykvkGTbOwrK6o.xml|yes"
         run: python main.py
