@@ -69,6 +69,17 @@ def _fetch_article_date(url: str) -> datetime | None:
     Used to catch RSS feeds that stamp old articles with today's date."""
     try:
         resp = requests.get(url, headers=HEADERS, timeout=10)
+
+        # Search raw HTML for ISO date strings (catches JS-rendered sites where
+        # the date is in a data attribute or script tag, e.g. "2026-02-02")
+        iso_dates = re.findall(r'(20\d{2})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])', resp.text[:60000])
+        if iso_dates:
+            try:
+                y, mo, d = iso_dates[0]
+                return datetime(int(y), int(mo), int(d), tzinfo=timezone.utc)
+            except Exception:
+                pass
+
         soup = BeautifulSoup(resp.text, "html.parser")
 
         # Standard article publish date meta tags
