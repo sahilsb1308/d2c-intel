@@ -102,15 +102,27 @@ def _fetch_article_date(url: str) -> datetime | None:
             except Exception:
                 pass
 
-        # Try elements with date-related class/id names (e.g. byline, post-date)
-        date_el = soup.find(class_=re.compile(r'date|publish|byline|posted|timestamp', re.I))
-        if date_el:
+        # Try elements with date-related class/id names, skip live-clock elements
+        for date_el in soup.find_all(class_=re.compile(r'date|publish|byline|posted|timestamp', re.I)):
+            classes = ' '.join(date_el.get('class', []))
+            if re.search(r'today|current|now|live', classes, re.I):
+                continue
             parsed = _parse_text_date(date_el.get_text())
             if parsed:
                 return parsed
 
-        # Last resort: scan first 3000 chars of page text for a date pattern
-        parsed = _parse_text_date(soup.get_text()[:3000])
+        # Look for "Published" keyword context in full page text — catches
+        # sites like indiaretailing.com that show "Published On : Mon, 2 Feb 2026"
+        full_text = soup.get_text()
+        pub_match = re.search(r'[Pp]ublish(?:ed)?\s*[Oo]n?\s*[:\-]?\s*(.{5,60})', full_text)
+        if pub_match:
+            parsed = _parse_text_date(pub_match.group(1))
+            if parsed:
+                return parsed
+
+        # Last resort: scan page text but skip first 500 chars (usually nav/header
+        # with live clock) to avoid picking up the site's current-date display
+        parsed = _parse_text_date(full_text[500:4000])
         if parsed:
             return parsed
 
