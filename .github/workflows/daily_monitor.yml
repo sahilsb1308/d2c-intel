@@ -68,7 +68,7 @@ jobs:
           BRAND_5_TAB: "Lakme"
           BRAND_5_RSS_FEEDS: "Reddit|https://rss.app/feeds/TvdKvvTDdZQ44otZ.xml|yes"
           BRAND_5_RSS_FEEDS_2: "X|https://rss.app/feeds/79K8NcR7NYVqZUiF.xml|yes"
-          BRAND_5_RSS_FEEDS_3: "X|https://rss.app/feeds/zq0PCo01sa2C6xdB.xml|no"
+          BRAND_5_RSS_FEEDS_3: "X|https://rss.app/feeds/pwgsrYBXnLaoshWN.xml|no"
           BRAND_5_RSS_FEEDS_4: "YouTube|https://www.youtube.com/feeds/videos.xml?channel_id=UCUI30rMByYDIEAEUFtG_Mtg|no"
           # Maybelline
           BRAND_6_NAME: "Maybelline"
