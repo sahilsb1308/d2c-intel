@@ -4,6 +4,7 @@ import requests as http_requests
 import ai_processor
 import sheets_writer
 from scrapers.rss_scraper import fetch_feed
+from scrapers.youtube_scraper import fetch_youtube
 from config import BRANDS
 
 
@@ -27,6 +28,10 @@ def run_brand(brand: dict) -> list[dict]:
                          exclude_keywords=exclude_keywords)
         print(f"  [{label}] {len(raw)} fetched")
         all_new.extend(raw)
+
+    yt_results = fetch_youtube(keywords, exclude_keywords=exclude_keywords)
+    print(f"  [YouTube] {len(yt_results)} fetched")
+    all_new.extend(yt_results)
 
     if not all_new:
         print("\nNothing new. Done.")
