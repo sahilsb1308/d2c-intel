@@ -25,7 +25,6 @@ jobs:
       - name: Run monitor
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
           GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON_CONTENT }}
           SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
           N8N_WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL }}
@@ -37,6 +36,7 @@ jobs:
           RSS_FEEDS: "LinkedIn|https://rss.app/feeds/ylvqTkeFXjn7jRBo.xml|no"
           RSS_FEEDS_2: "Reddit|https://rss.app/feeds/QuuIDvKATAncaqA7.xml|yes"
           RSS_FEEDS_3: "X|https://rss.app/feeds/PVAJ8H37eWoMQySq.xml|yes"
+          RSS_FEEDS_4: "YouTube|https://www.youtube.com/feeds/videos.xml?channel_id=UCWBOF1mxr6YXphO0vXAUa1Q|no"
           # Mars
           BRAND_2_NAME: "Mars"
           BRAND_2_KEYWORDS: "Mars Cosmetics,Mars by GHC,Mars"
@@ -45,6 +45,8 @@ jobs:
           BRAND_2_RSS_FEEDS: "LinkedIn|https://rss.app/feeds/JGxIlsDvGV083wXA.xml|no"
           BRAND_2_RSS_FEEDS_2: "Reddit|https://rss.app/feeds/DwYXHpSWuRqrTd2v.xml|yes"
           BRAND_2_RSS_FEEDS_3: "X|https://rss.app/feeds/QQZuTfNrXu48Xjt6.xml|yes"
+          BRAND_2_RSS_FEEDS_4: "X (Official)|https://rss.app/feeds/TDuLUJAZkA16JPuq.xml|no"
+          BRAND_2_RSS_FEEDS_5: "YouTube|https://www.youtube.com/feeds/videos.xml?channel_id=UCyv-IC5yJoae4g1DYsZyLow|no"
           # Renee
           BRAND_3_NAME: "Renee Cosmetics"
           BRAND_3_KEYWORDS: "Renee Cosmetics,Renee"
@@ -52,28 +54,35 @@ jobs:
           BRAND_3_RSS_FEEDS: "LinkedIn|https://rss.app/feeds/VAnQfqiYb8kHHNUc.xml|no"
           BRAND_3_RSS_FEEDS_2: "Reddit|https://rss.app/feeds/NGOzRd53svEYXwGH.xml|yes"
           BRAND_3_RSS_FEEDS_3: "X|https://rss.app/feeds/nc6XlDNc6A9mwDu0.xml|yes"
+          BRAND_3_RSS_FEEDS_4: "YouTube|https://www.youtube.com/feeds/videos.xml?channel_id=UCoYCGc3GA6gyuSggZu8Fw2Q|no"
           # Blueheaven
           BRAND_4_NAME: "Blue Heaven"
           BRAND_4_KEYWORDS: "Blue Heaven,BlueHeaven,Blue Heaven cosmetics"
           BRAND_4_TAB: "Blueheaven"
           BRAND_4_RSS_FEEDS: "Reddit|https://www.reddit.com/search.rss?q=Blueheaven+cosmetics&sort=new|yes"
           BRAND_4_RSS_FEEDS_2: "X|https://rss.app/feeds/mdRjno2ADnYxhkZL.xml|yes"
+          BRAND_4_RSS_FEEDS_3: "YouTube|https://www.youtube.com/feeds/videos.xml?channel_id=UC_u-mXlDOIWkiZ5aFV25myw|no"
           # Lakme
           BRAND_5_NAME: "Lakme"
           BRAND_5_KEYWORDS: "Lakme,Lakmé,Lakme India"
           BRAND_5_TAB: "Lakme"
           BRAND_5_RSS_FEEDS: "Reddit|https://rss.app/feeds/TvdKvvTDdZQ44otZ.xml|yes"
           BRAND_5_RSS_FEEDS_2: "X|https://rss.app/feeds/79K8NcR7NYVqZUiF.xml|yes"
+          BRAND_5_RSS_FEEDS_3: "X (Official)|https://rss.app/feeds/zq0PCo01sa2C6xdB.xml|no"
+          BRAND_5_RSS_FEEDS_4: "YouTube|https://www.youtube.com/feeds/videos.xml?channel_id=UCUI30rMByYDIEAEUFtG_Mtg|no"
           # Maybelline
           BRAND_6_NAME: "Maybelline"
           BRAND_6_KEYWORDS: "Maybelline,Maybelline India,Maybelline New York"
           BRAND_6_TAB: "Maybelline"
           BRAND_6_RSS_FEEDS: "Reddit|https://rss.app/feeds/cDdmQ1V1ylQM7tL6.xml|yes"
           BRAND_6_RSS_FEEDS_2: "X|https://rss.app/feeds/oX1pw3e7jAo2WDSb.xml|yes"
+          BRAND_6_RSS_FEEDS_3: "X (Official)|https://rss.app/feeds/EsTamr4LPDUgpCPl.xml|no"
+          BRAND_6_RSS_FEEDS_4: "YouTube|https://www.youtube.com/feeds/videos.xml?channel_id=UCJd0jl8aKCqxF94by-R_3ZQ|no"
           # Staze Beauty
           BRAND_7_NAME: "Staze Beauty"
           BRAND_7_KEYWORDS: "Staze Beauty,Staze"
           BRAND_7_TAB: "Staze Beauty"
           BRAND_7_RSS_FEEDS: "Reddit|https://rss.app/feeds/FJHSc1Gigdci3zTo.xml|yes"
           BRAND_7_RSS_FEEDS_2: "X|https://rss.app/feeds/yqgykvkGTbOwrK6o.xml|yes"
+          BRAND_7_RSS_FEEDS_3: "YouTube|https://www.youtube.com/feeds/videos.xml?channel_id=UCDeomWILmywD_q9Jk0u95rQ|no"
         run: python main.py
