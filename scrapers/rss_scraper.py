@@ -155,6 +155,22 @@ def _fetch_article_date(url: str) -> datetime | None:
     return None
 
 
+def _fetch_og_image(url: str) -> str:
+    """Fetch og:image from a post URL. Used for X/Reddit/LinkedIn where RSS has no image."""
+    try:
+        resp = requests.get(url, headers=HEADERS, timeout=8)
+        soup = BeautifulSoup(resp.text, "html.parser")
+        for attr in ("og:image", "twitter:image"):
+            tag = soup.find("meta", property=attr) or soup.find("meta", attrs={"name": attr})
+            if tag and tag.get("content"):
+                img = tag["content"].strip()
+                if img.startswith("http"):
+                    return img
+    except Exception:
+        pass
+    return ""
+
+
 def _keyword_match(text: str, keywords: list[str]) -> bool:
     t = text.lower()
     return any(kw.lower() in t for kw in keywords)
@@ -213,6 +229,10 @@ def fetch_feed(url: str, label: str, keywords: list[str], filter_keywords: bool 
 
         media = entry.get("media_content", [])
         raw_img = media[0].get("url", "") if media else ""
+        # Reddit posts are public — fetch og:image when RSS has no media
+        # X and LinkedIn require login so og:image is blocked there
+        if not raw_img and label == "Reddit":
+            raw_img = _fetch_og_image(link)
         # Proxy non-YouTube images through wsrv.nl so Google Sheets IMAGE() can load them
         image_url = (
             raw_img if (not raw_img or "ytimg.com" in raw_img)
