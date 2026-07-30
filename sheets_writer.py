@@ -8,7 +8,7 @@ SCOPES = [
     "https://www.googleapis.com/auth/drive",
 ]
 
-HEADERS = ["Title", "AI Title", "Category", "Source", "Summary", "Link", "Sentiment", "Date Added"]
+HEADERS = ["Title", "AI Title", "Category", "Source", "Summary", "Link", "Sentiment", "Date Added", "Image"]
 
 IST = timezone(timedelta(hours=5, minutes=30))
 
@@ -73,6 +73,7 @@ def append_mentions(tab_name: str, mentions: list[dict]):
         "Link":       lambda m: m.get("url", ""),
         "Sentiment":  lambda m: m.get("sentiment", "").capitalize(),
         "Date Added": lambda m: today,
+        "Image":      lambda m: f'=IMAGE("{m["image_url"]}", 1)' if m.get("image_url") else "",
     }
 
     num_cols = max(header_map.values())
@@ -84,5 +85,5 @@ def append_mentions(tab_name: str, mentions: list[dict]):
                 row[col_idx - 1] = field_map[col_name](m)
         rows.append(row)
 
-    ws.append_rows(rows, value_input_option="USER_ENTERED")
+    ws.insert_rows(rows, row=2, value_input_option="USER_ENTERED")
     print(f"  [sheets] Wrote {len(rows)} rows to tab '{tab_name}'")

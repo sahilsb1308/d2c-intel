@@ -210,6 +210,9 @@ def fetch_feed(url: str, label: str, keywords: list[str], filter_keywords: bool 
             or entry.get("source", {}).get("title", "")
         )
 
+        media = entry.get("media_content", [])
+        image_url = media[0].get("url", "") if media else ""
+
         mentions.append({
             "platform": label,
             "url": link,
@@ -217,6 +220,7 @@ def fetch_feed(url: str, label: str, keywords: list[str], filter_keywords: bool 
             "author": author,
             "post_date": pub_date.strftime("%Y-%m-%d %H:%M UTC") if pub_date else "",
             "content": full_text[:2000],
+            "image_url": image_url,
         })
 
     return mentions
