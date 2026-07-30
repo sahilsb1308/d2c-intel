@@ -4,6 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timezone, timedelta
 from email.utils import parsedate_to_datetime
+from urllib.parse import quote
 
 IST = timezone(timedelta(hours=5, minutes=30))
 
@@ -211,7 +212,12 @@ def fetch_feed(url: str, label: str, keywords: list[str], filter_keywords: bool 
         )
 
         media = entry.get("media_content", [])
-        image_url = media[0].get("url", "") if media else ""
+        raw_img = media[0].get("url", "") if media else ""
+        # Proxy non-YouTube images through wsrv.nl so Google Sheets IMAGE() can load them
+        image_url = (
+            raw_img if (not raw_img or "ytimg.com" in raw_img)
+            else f"https://wsrv.nl/?url={quote(raw_img, safe='')}"
+        )
 
         mentions.append({
             "platform": label,
