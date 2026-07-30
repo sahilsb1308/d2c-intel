@@ -1,4 +1,5 @@
 import gspread
+import re
 from google.oauth2.service_account import Credentials
 from datetime import datetime, timedelta, timezone
 from config import GOOGLE_SERVICE_ACCOUNT_JSON, SPREADSHEET_ID
@@ -44,6 +45,14 @@ def _get_header_map(ws) -> dict:
     return {h.strip(): i + 1 for i, h in enumerate(headers) if h.strip()}
 
 
+def _extract_url(cell: str) -> str:
+    """Extract raw URL from either a plain URL or =HYPERLINK("url", ...) formula."""
+    if not cell:
+        return ""
+    m = re.match(r'=HYPERLINK\("([^"]+)"', cell, re.IGNORECASE)
+    return m.group(1) if m else cell
+
+
 def get_existing_links(tab_name: str) -> set:
     ws = _get_or_create_tab(tab_name)
     try:
@@ -51,7 +60,8 @@ def get_existing_links(tab_name: str) -> set:
         link_col = header_map.get("Link")
         if not link_col:
             return set()
-        return set(v for v in ws.col_values(link_col)[1:] if v)
+        raw = ws.col_values(link_col, value_render_option="FORMULA")[1:]
+        return set(_extract_url(v) for v in raw if v)
     except Exception:
         return set()
 
@@ -70,7 +80,7 @@ def append_mentions(tab_name: str, mentions: list[dict]):
         "Category":   lambda m: m.get("category", "General Mention"),
         "Source":     lambda m: m.get("platform", tab_name),
         "Summary":    lambda m: m.get("summary", ""),
-        "Link":       lambda m: m.get("url", ""),
+        "Link":       lambda m: f'=HYPERLINK("{m.get("url", "")}", "Open →")' if m.get("url") else "",
         "Sentiment":  lambda m: m.get("sentiment", "").capitalize(),
         "Date Added": lambda m: today,
         "Post Preview": lambda m: f'=IMAGE("{m["image_url"]}", 1)' if m.get("image_url") else "",
