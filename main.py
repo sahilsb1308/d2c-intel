@@ -75,6 +75,7 @@ def fire_webhook(all_posts: list[dict]):
         "platform":  p.get("platform", ""),
         "title":     p.get("title", "")[:200],
         "url":       p.get("url", ""),
+        "image_url": p.get("image_url", ""),
     } for p in all_posts]}
 
     try:
