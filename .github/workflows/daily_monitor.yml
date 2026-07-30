@@ -64,8 +64,7 @@ jobs:
           BRAND_4_TAB: "Blueheaven"
           BRAND_4_RSS_FEEDS: "Reddit|https://www.reddit.com/search.rss?q=Blueheaven+cosmetics&sort=new|yes"
           BRAND_4_RSS_FEEDS_2: "X|https://rss.app/feeds/mdRjno2ADnYxhkZL.xml|yes"
-          BRAND_4_RSS_FEEDS_3: "YouTube|https://www.youtube.com/feeds/videos.xml?channel_id=UC_u-mXlDOIWkiZ5aFV25myw|no"
-          BRAND_4_RSS_FEEDS_4: "Instagram|https://rss.app/feeds/oAthCsDZQeK4ClsM.xml|no"
+          BRAND_4_RSS_FEEDS_3: "Instagram|https://rss.app/feeds/oAthCsDZQeK4ClsM.xml|no"
           # Lakme
           BRAND_5_NAME: "Lakme"
           BRAND_5_KEYWORDS: "Lakme,Lakmé,Lakme India"
