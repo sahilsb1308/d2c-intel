@@ -20,6 +20,7 @@ def run_brand(brand: dict) -> list[dict]:
 
     exclude_keywords = brand.get("exclude_keywords", [])
     all_new = []
+    seen_urls = set()
     for feed_cfg in feeds:
         label = feed_cfg["label"]
         raw = fetch_feed(feed_cfg["url"], label, keywords=keywords,
@@ -27,6 +28,18 @@ def run_brand(brand: dict) -> list[dict]:
                          exclude_keywords=exclude_keywords)
         print(f"  [{label}] {len(raw)} fetched")
         all_new.extend(raw)
+
+    # Dedup: skip URLs already in the sheet and collapse duplicates within this batch
+    existing_links = sheets_writer.get_existing_links(tab)
+    deduped = []
+    for p in all_new:
+        url = p.get("url", "")
+        if url and url not in existing_links and url not in seen_urls:
+            deduped.append(p)
+            seen_urls.add(url)
+        elif url:
+            print(f"  [dedup] Skipped already-seen: {url[:80]}")
+    all_new = deduped
 
     if not all_new:
         print("\nNothing new. Done.")
