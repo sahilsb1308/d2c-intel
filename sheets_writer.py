@@ -61,7 +61,7 @@ def get_existing_links(tab_name: str) -> set:
         if not link_col:
             return set()
         raw = ws.col_values(link_col, value_render_option="FORMULA")[1:]
-        return set(_extract_url(v) for v in raw if v)
+        return set(_extract_url(v) for v in raw if v)  # handles both plain URLs and legacy HYPERLINK formulas
     except Exception:
         return set()
 
@@ -80,7 +80,7 @@ def append_mentions(tab_name: str, mentions: list[dict]):
         "Category":   lambda m: m.get("category", "General Mention"),
         "Source":     lambda m: m.get("platform", tab_name),
         "Summary":    lambda m: m.get("summary", ""),
-        "Link":       lambda m: f'=HYPERLINK("{m.get("url", "")}", "Open →")' if m.get("url") else "",
+        "Link":       lambda m: m.get("url", ""),
         "Sentiment":  lambda m: m.get("sentiment", "").capitalize(),
         "Date Added": lambda m: today,
         "Post Preview": lambda m: f'=IMAGE("{m["image_url"]}", 1)' if m.get("image_url") else "",
