@@ -61,7 +61,7 @@ jobs:
           # Blueheaven
           BRAND_4_NAME: "Blue Heaven"
           BRAND_4_KEYWORDS: "Blue Heaven,BlueHeaven,Blue Heaven cosmetics"
-          BRAND_4_TAB: "Blueheaven"
+          BRAND_4_TAB: "Blue Heaven"
           BRAND_4_RSS_FEEDS: "Reddit|https://www.reddit.com/search.rss?q=Blueheaven+cosmetics&sort=new|yes"
           BRAND_4_RSS_FEEDS_2: "X|https://rss.app/feeds/mdRjno2ADnYxhkZL.xml|yes"
           BRAND_4_RSS_FEEDS_3: "Instagram|https://rss.app/feeds/oAthCsDZQeK4ClsM.xml|no"
